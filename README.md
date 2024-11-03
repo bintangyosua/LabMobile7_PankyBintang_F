@@ -75,7 +75,9 @@ export const autoLoginGuard: CanActivateFn = (route, state) => {
 
 ### 1.3 Auth Guard > Home
 
-Pada konfigurasi routing, modul `home` memiliki guard berupa Home Guard. Berikut adalah kodenya. Jika state user, yaitu
+Pada konfigurasi routing, modul `home` memiliki guard berupa Home Guard. Jika state user bernilai `false` (yang mana berarti `user` belum `login`), maka akan diarahkan ke halaman `login`, jika bernilai `true` akan tetap berada di halaman `home`.
+
+Berikut adalah Guard nya:
 
 ```ts
 export const authGuard: CanActivateFn = (route, state) => {
