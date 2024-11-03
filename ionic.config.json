@@ -1,0 +1,7 @@
+{
+  "name": "pertemuan_8_ionic_auth",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
