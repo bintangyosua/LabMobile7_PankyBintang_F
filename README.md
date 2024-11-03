@@ -7,6 +7,22 @@ Shift Baru: F
 Shift Lama: D
 ```
 
+## Table of Contents
+
+- [Tugas 7 Praktikum Pemrograman Mobile](#tugas-7-praktikum-pemrograman-mobile)
+  - [Table of Contents](#table-of-contents)
+  - [1. Routing](#1-routing)
+    - [1.1 Spesifikasi Routing](#11-spesifikasi-routing)
+    - [1.2 Auth Guard \> Login](#12-auth-guard--login)
+    - [1.3 Auth Guard \> Home](#13-auth-guard--home)
+  - [2. Login](#2-login)
+    - [2.1 Halaman Login](#21-halaman-login)
+    - [2.2 Login Handler](#22-login-handler)
+    - [2.3 Proses Setelah Klik Button Login](#23-proses-setelah-klik-button-login)
+  - [3. Home](#3-home)
+    - [3.1 Halaman Home](#31-halaman-home)
+    - [3.2 Home Handler dan Proses setelah klik Button Logout](#32-home-handler-dan-proses-setelah-klik-button-logout)
+
 ## 1. Routing
 
 ### 1.1 Spesifikasi Routing
@@ -57,6 +73,30 @@ export const autoLoginGuard: CanActivateFn = (route, state) => {
 };
 ```
 
+### 1.3 Auth Guard > Home
+
+Pada konfigurasi routing, modul `home` memiliki guard berupa Home Guard. Berikut adalah kodenya. Jika state user, yaitu
+
+```ts
+export const authGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthenticationService);
+  const router = inject(Router);
+
+  return authService.authenticationState.pipe(
+    filter((val) => val !== null),
+    take(1),
+    map((isAuthenticated) => {
+      if (isAuthenticated) {
+        return true;
+      } else {
+        router.navigateByUrl("/login", { replaceUrl: true });
+        return true;
+      }
+    })
+  );
+};
+```
+
 ## 2. Login
 
 ### 2.1 Halaman Login
@@ -98,6 +138,8 @@ Berikut adalah kodenya.
 ```
 
 ![Halaman Login](./snapshots/1_login.png)
+
+### 2.2 Login Handler
 
 Field yang ada pada halaman `login` dihandle oleh atribut yang dimiliki oleh `LoginPage`, yaitu `username`, dan `password`. Semua field memiliki validasi `required`, sehingga perlu diisi. Untuk submit dengan menekan tombol `Login`. Button ini akan mentrigger fungsi `login()` pada `LoginPage`.
 
@@ -143,6 +185,8 @@ export class LoginPage implements OnInit {
 }
 ```
 
+### 2.3 Proses Setelah Klik Button Login
+
 Jika username atau password kosong, maka memunculkan pop up Notifikasi dengan pesan `Username atau Password Tidak Boleh Kosong`.
 
 ![Pup Up Username/Password Kosong](./snapshots/username_password_kosong.png)
@@ -151,29 +195,9 @@ Jika berhasil maka melakukan fetch data user ke API, lalu mencocokkan data. Jika
 
 Namun, jika berhasil akan menyimpan data user secara temporal, menyimpan state `isAuthenticated` menjadi `true` dan diarahkan ke halaman `/home`.
 
-## 2. Home
+## 3. Home
 
-Pada konfigurasi routing, modul `home` memiliki guard berupa Home Guard. Berikut adalah kodenya. Jika state user, yaitu
-
-```ts
-export const authGuard: CanActivateFn = (route, state) => {
-  const authService = inject(AuthenticationService);
-  const router = inject(Router);
-
-  return authService.authenticationState.pipe(
-    filter((val) => val !== null),
-    take(1),
-    map((isAuthenticated) => {
-      if (isAuthenticated) {
-        return true;
-      } else {
-        router.navigateByUrl("/login", { replaceUrl: true });
-        return true;
-      }
-    })
-  );
-};
-```
+### 3.1 Halaman Home
 
 Halaman home merupakan modul dari `home`. Modul ini memiliki `declaration` berupa `HomePage`. `HomePage` memiliki halaman `html/template` yaitu `html home`.
 
@@ -205,6 +229,8 @@ Halaman `Home` dirender oleh kode html pada file `src\app\home\home.page.html`.
 ![Halaman Home](./snapshots/2_homepage.png)
 
 Di halaman ini terdapat pesan `Selamat Datang {nama user}` serta tombol `Logout` untuk keluar dari aplikasi. Jika tombol `Logout` diklik akan mentrigger fungsi `logout` pada class `HomePage`.
+
+### 3.2 Home Handler dan Proses setelah klik Button Logout
 
 Fungsi ini akan mengubah state `isAuthenticated` menjadi `false` dan menghapus data autentikasi. Setelah itu diarahkan ke halaman login karena tidak memenuhi kondisi pada Home Guard.
 
