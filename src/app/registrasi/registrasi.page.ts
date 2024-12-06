@@ -3,11 +3,11 @@ import { AuthenticationService } from '../services/authentication.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+  selector: 'app-registrasi',
+  templateUrl: './registrasi.page.html',
+  styleUrls: ['./registrasi.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class RegistrasiPage implements OnInit {
   username: any;
   password: any;
   constructor(
@@ -17,26 +17,24 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {}
 
-  login() {
+  registrasi() {
     if (this.username != null && this.password != null) {
       const data = {
         username: this.username,
         password: this.password,
       };
-      this.authService.postMethod(data, 'login.php').subscribe({
+      this.authService.postMethod(data, 'registrasi.php').subscribe({
         next: (res) => {
-          if (res.status_login == 'berhasil') {
-            this.authService.saveData(res.token, res.username);
-            this.username = '';
-            this.password = '';
-            this.router.navigateByUrl('/mahasiswa');
-          } else {
-            this.authService.notifikasi('Username atau Password Salah');
-          }
+          console.log({res})
+          this.authService.saveData(res.token, res.username);
+          this.username = '';
+          this.password = '';
+          this.router.navigateByUrl('/mahasiswa');
         },
         error: (e) => {
+          console.log({e})
           this.authService.notifikasi(
-            'Login Gagal Periksa Koneksi Internet Anda'
+            'Registrasi Gagal Periksa Koneksi Internet Anda'
           );
         },
       });
