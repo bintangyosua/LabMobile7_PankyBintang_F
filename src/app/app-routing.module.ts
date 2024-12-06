@@ -5,9 +5,9 @@ import { autoLoginGuard } from './guards/auto-login.guard';
 
 const routes: Routes = [
   {
-    path: 'home',
+    path: 'mahasiswa',
     loadChildren: () =>
-      import('./home/home.module').then((m) => m.HomePageModule),
+      import('./mahasiswa/mahasiswa.module').then((m) => m.MahasiswaPageModule),
     canActivate: [authGuard],
   },
   {
@@ -21,6 +21,12 @@ const routes: Routes = [
       import('./login/login.module').then((m) => m.LoginPageModule),
     canActivate: [autoLoginGuard],
   },
+  {
+    path: 'registrasi',
+    loadChildren: () => import('./registrasi/registrasi.module').then( m => m.RegistrasiPageModule),
+    canActivate: [autoLoginGuard]
+  },
+
 ];
 
 @NgModule({

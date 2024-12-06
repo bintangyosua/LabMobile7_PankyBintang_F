@@ -12,7 +12,7 @@ export const autoLoginGuard: CanActivateFn = (route, state) => {
     take(1),
     map((isAuthenticated) => {
       if (isAuthenticated) {
-        router.navigateByUrl('/home', { replaceUrl: true });
+        router.navigateByUrl('/mahasiswa', { replaceUrl: true });
         return true;
       } else {
         return true;

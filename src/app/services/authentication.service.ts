@@ -66,7 +66,7 @@ export class AuthenticationService {
   }
 
   apiURL() {
-    return 'http://ionic-auth.test';
+    return 'http://localhost/template';
   }
 
   logout() {
